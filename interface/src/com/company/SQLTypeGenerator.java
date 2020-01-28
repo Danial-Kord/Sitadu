@@ -15,15 +15,21 @@ public class SQLTypeGenerator {
                 } else if (object instanceof String) {
                     preparedStatement.setString(i+1,(String)object);
                 }
-                else if (object instanceof java.util.Date) {
-                    long me = ((java.util.Date)object).getTime();
-                    preparedStatement.setDate(i+1,new Date(me));
+                else if (object instanceof Date){
+                    preparedStatement.setDate(i+1,(Date)object);
+                }
+                else if (object instanceof Timestamp){
+                    preparedStatement.setTimestamp(i+1,(Timestamp)object);
                 }
                 else if (object instanceof Float) {
                     preparedStatement.setFloat(i+1, (float) object);
                 }
                 else if (object instanceof Integer) {
                     preparedStatement.setFloat(i+1,(int)object);
+                }
+                else {
+                    RuntimeException runtimeException = new RuntimeException();
+                    throw runtimeException;
                 }
             }
         } catch (SQLException e) {
@@ -40,7 +46,7 @@ public class SQLTypeGenerator {
                  if (object instanceof String) {
                    objects.set(i,resultSet.getString(i+1));
                 }
-                else if (object instanceof java.util.Date) {
+                else if (object instanceof Date) {
                     objects.set(i,resultSet.getDate(i+1));
 
                 }

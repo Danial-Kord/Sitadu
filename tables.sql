@@ -14,10 +14,7 @@ create table address(
     primary key (id)
 );
 
-create table customer_id(
-  id    char(15),
-  primary key (id)
-);
+
 create table customer
 (
     user    varchar(20) not null ,
@@ -31,14 +28,14 @@ create table customer
     foreign key (address_id) references address(id),
     primary key (user)
 );
-
 create table factor(
-    customer_id char(15) default null ,
     id int auto_increment,
+    customer_id varchar(20)  null,
     name char(30) default null,
-    date date,
-    foreign key (customer_id) references customer(user),#TODO
-    primary key (id)
+    time DATETIME,
+    primary key (id),
+        FOREIGN KEY (customer_id)
+       REFERENCES customer(user)
 );
 
 create table menu(
