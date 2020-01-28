@@ -6,6 +6,7 @@ import java.sql.*;
 
 public class DBConnection {
     public static Statement statement;
+    public static Connection connection;
     public static void connect(){
 
         try {
@@ -14,8 +15,9 @@ public class DBConnection {
             String serverName = "localhost:3306";
             String mydatabase = "sitadu_DataBase";
             String url = "jdbc:mysql://" + serverName + "/" + mydatabase;
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/sitadu_DataBase","root","Dkm45477781");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/sitadu_DataBase","root","Dkm45477781");
             statement = connection.createStatement();
+
         }
         catch (SQLException e) {
             System.out.println("couldn't build statement object");
@@ -44,4 +46,5 @@ public class DBConnection {
         }
         return null;
     }
+
 }

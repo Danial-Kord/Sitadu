@@ -1,5 +1,6 @@
 package com.company;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,17 +21,28 @@ public void logIn(String user,String pass){
 
 }
 public boolean signUp(){
-    ArrayList<String> strings = new ArrayList<String>();
-    strings.add("user");
-    String statement = SQLStatement.select("customer",strings);
+
+    String statement = SQLStatement.select("customer","user","user =\'"+user+"\'");
     try {
         ResultSet rs = DBConnection.myExcuteQuery(statement);
-        while (rs.next()) {
-            String coffeeName = rs.getString("user");
-            System.out.println(coffeeName);
+
+        if (rs.next()) {
+            System.out.println("user exists");
+            return false;
         }
     } catch (SQLException e) {
         e.printStackTrace();
+    }
+    PreparedStatement preparedStatement = null;
+    try {
+        ArrayList<Object> allDatas = allDatas();
+        statement = SQLStatement.insert("customer",allDatas.size());
+        preparedStatement = DBConnection.connection.prepareStatement(statement);
+        SQLTypeGenerator.setdata(preparedStatement,allDatas);
+        return preparedStatement.execute();
+    } catch (SQLException e) {
+        e.printStackTrace();
+
     }
     return false;
 }
@@ -39,6 +51,18 @@ public boolean signUp(){
         return id;
     }
 
+    public ArrayList<Object> allDatas(){
+    ArrayList<Object>objects = new ArrayList<Object>();
+        objects.add(user);
+        objects.add(pass);
+        objects.add(first_name);
+        objects.add(last_name);
+        objects.add(melli_code);
+        objects.add(phone);
+        objects.add(address.getId());
+        objects.add(age);
+        return objects;
+    }
     public void setId(String id) {
         this.id = id;
     }
