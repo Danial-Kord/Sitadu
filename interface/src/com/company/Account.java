@@ -6,20 +6,47 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Account {
-    private String id;
     private String user;
     private String pass;
     private String first_name;
     private String last_name;
     private String melli_code;
     private String phone;
-    private String age;
+    private int age;
     private Address address;
     private ArrayList<Factor>factors;
 
-public void logIn(String user,String pass){
+public boolean logIn(String user,String pass){
+
+    String statement = SQLStatement.select("customer","*","user = \'"+user+"\' and pass = \'"+pass+"\'");
+    try {
+//            ResultSet rs = DBConnection.myExcuteQuery(statement);
+        PreparedStatement preparedStatement = DBConnection.connection.prepareStatement(statement);
+        //preparedStatement.setInt(1, Types.INTEGER);
+        ResultSet rs = preparedStatement.executeQuery();
+        if (rs.next()) {
+            first_name = rs.getString("first_name");
+            last_name = rs.getString("last_name");
+            melli_code = rs.getString("melli_code");
+            age = rs.getInt("age");
+            phone = rs.getString("phone");
+            int addressId = rs.getInt("address_id");
+            return address.findAddress(addressId);
+        }
+        else {
+            System.out.println("wrong user or pass!");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
 
 }
+
+public void logIn(){
+logIn(user,pass);
+}
+
 public boolean signUp(){
 
     String statement = SQLStatement.select("customer","user","user =\'"+user+"\'");
@@ -47,8 +74,8 @@ public boolean signUp(){
     return false;
 }
 
-    public String getId() {
-        return id;
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public ArrayList<Object> allDatas(){
@@ -63,9 +90,7 @@ public boolean signUp(){
         objects.add(age);
         return objects;
     }
-    public void setId(String id) {
-        this.id = id;
-    }
+
 
     public String getUser() {
         return user;
@@ -115,13 +140,11 @@ public boolean signUp(){
         this.phone = phone;
     }
 
-    public String getAge() {
+    public int getAge() {
         return age;
     }
 
-    public void setAge(String age) {
-        this.age = age;
-    }
+
 
     public Address getAddress() {
         return address;

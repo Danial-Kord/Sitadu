@@ -1,8 +1,5 @@
 package com.company;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class SQLTypeGenerator {
@@ -33,5 +30,30 @@ public class SQLTypeGenerator {
             e.printStackTrace();
         }
         return preparedStatement;
+    }
+
+    public static void getData(ResultSet resultSet, ArrayList<Object>objects){
+        try {
+            Object object;
+            for (int i = 0; i < objects.size(); i++) {
+                object = objects.get(i);
+                 if (object instanceof String) {
+                   objects.set(i,resultSet.getString(i+1));
+                }
+                else if (object instanceof java.util.Date) {
+                    objects.set(i,resultSet.getDate(i+1));
+
+                }
+                else if (object instanceof Float) {
+                    objects.set(i,resultSet.getFloat(i+1));
+                }
+                else if (object instanceof Integer) {
+                    objects.set(i,resultSet.getInt(i+1));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }

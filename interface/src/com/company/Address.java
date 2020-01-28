@@ -14,7 +14,10 @@ public class Address {
 
 
 
-    public Address(){
+
+
+
+    public void addToDataBase(){
         String statement = SQLStatement.select("address","max(id)");
         try {
 //            ResultSet rs = DBConnection.myExcuteQuery(statement);
@@ -31,12 +34,6 @@ public class Address {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-    }
-
-
-    public void addToDataBase(){
-        String statement = null;
         try{
                 statement = SQLStatement.insert("address",4);
                 PreparedStatement preparedStatement = null;
@@ -51,6 +48,28 @@ public class Address {
 
     }
 
+    public boolean findAddress(int id){
+        this.id = id;
+        String statement = SQLStatement.select("address","*","id = \'"+id+"\'");
+        try {
+//            ResultSet rs = DBConnection.myExcuteQuery(statement);
+            PreparedStatement preparedStatement = DBConnection.connection.prepareStatement(statement);
+            //preparedStatement.setInt(1, Types.INTEGER);
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                name = rs.getString("name");
+                address = rs.getString("address");
+                house_phone_number = rs.getString("house_phone_number");
+                return true;
+            }
+            else {
+                System.out.println("wrong user or pass!");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     public Integer getId() {
         return id;
     }
