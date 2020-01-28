@@ -78,6 +78,27 @@ public class Food {
         return foods;
     }
 
+    public int getId() {
+        return id;
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
     public ArrayList<Object> allDatas(){
         ArrayList<Object> objects = new ArrayList<Object>();
         objects.add(id);

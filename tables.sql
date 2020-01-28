@@ -41,7 +41,7 @@ create table factor(
 create table menu(
 id int auto_increment,
 name    varchar(30),
-total_price   int(7),
+price   int,
 primary key (id)
 );
 create table menu_factor(
@@ -49,7 +49,7 @@ create table menu_factor(
     factor_id int,
     food_id int,
     food_name    varchar(30),
-    food_price   int(7),
+    price   int,
     primary key (id),
     foreign key (factor_id) references factor(id),
     foreign key (food_id) references menu(id)

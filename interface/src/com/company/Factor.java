@@ -21,7 +21,7 @@ public class Factor {
             if (rs.next()) {
                 System.out.println("max factor id : "+rs.getInt(1));
                 id = rs.getInt(1)+1;
-                time = new Timestamp(Calendar.getInstance().getTime().getTime());
+                foods = new ArrayList<Food>();
                 return true;
             }
             else {
@@ -41,7 +41,7 @@ public class Factor {
             allDatas.remove(customer_id);
             statement = SQLStatement.insert("factor","id,name,time");
             PreparedStatement preparedStatement = null;
-
+            time = new Timestamp(Calendar.getInstance().getTime().getTime());
             preparedStatement = DBConnection.connection.prepareStatement(statement);
             SQLTypeGenerator.setdata(preparedStatement,allDatas);
             return preparedStatement.execute();
@@ -52,13 +52,14 @@ public class Factor {
         return false;
     }
 
-    public boolean addNewFactor(int customer_id){
+    public boolean addNewFactor(int customer_id,String name){
         String statement;
         if(!setNewId())
             return false;
         try{
             time = new Timestamp(Calendar.getInstance().getTime().getTime());
             this.customer_id = customer_id;
+            this.name = name;
             ArrayList<Object>allDatas = allDatas();
             statement = SQLStatement.insert("factor",allDatas.size());
             PreparedStatement preparedStatement = null;
@@ -72,6 +73,31 @@ public class Factor {
         }
         return false;
     }
+
+    public boolean addFoodToFactor(Food food){
+        String statement;
+        try{
+            ArrayList<Object>allDatas = new ArrayList<Object>();
+            allDatas.add(id);
+            allDatas.add(food.getId());
+            allDatas.add(food.getName());
+            allDatas.add(food.getPrice());
+            statement = SQLStatement.insert("menu_factor","factor_id,food_id,food_name,price");
+            PreparedStatement preparedStatement = null;
+
+            preparedStatement = DBConnection.connection.prepareStatement(statement);
+            SQLTypeGenerator.setdata(preparedStatement,allDatas);
+            if(preparedStatement.execute()){
+                foods.add(food);
+                return true;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
     public ArrayList<Object> allDatas(){
         ArrayList<Object> objects = new ArrayList<Object>();
