@@ -3,7 +3,6 @@ package com.company;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.ArrayList;
 
 public class Address {
@@ -18,7 +17,7 @@ public class Address {
 
 
     public void addToDataBase(){
-        String statement = SQLStatement.select("address","max(id)");
+        String statement = SQLStatement.selectWithCond("address","max(id)");
         try {
 //            ResultSet rs = DBConnection.myExcuteQuery(statement);
             PreparedStatement preparedStatement = DBConnection.connection.prepareStatement(statement);

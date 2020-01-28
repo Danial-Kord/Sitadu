@@ -3,6 +3,7 @@ package com.company;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public class Account {
@@ -15,6 +16,7 @@ public class Account {
     private int age;
     private Address address;
     private ArrayList<Factor>factors;
+    private boolean logedIn = false;
 
 public boolean logIn(String user,String pass){
 
@@ -31,7 +33,8 @@ public boolean logIn(String user,String pass){
             age = rs.getInt("age");
             phone = rs.getString("phone");
             int addressId = rs.getInt("address_id");
-            return address.findAddress(addressId);
+            logedIn = address.findAddress(addressId);
+            return logedIn;
         }
         else {
             System.out.println("wrong user or pass!");
@@ -91,9 +94,36 @@ public boolean signUp(){
         return objects;
     }
 
-
+    public boolean findAllFactors(){
+        if(!logedIn)
+            return false;
+        String statement = SQLStatement.select("facor","*","customer_id = \'"+user+"\'");
+        try {
+//            ResultSet rs = DBConnection.myExcuteQuery(statement);
+            PreparedStatement preparedStatement = DBConnection.connection.prepareStatement(statement);
+            //preparedStatement.setInt(1, Types.INTEGER);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String total_price = rs.getString("total_price");
+                Timestamp time = rs.getTimestamp("time");
+                String name = rs.getString("name");
+                Factor factor = new Factor(id,user,total_price,time,name);
+                factor.findFoodsOfFactor();
+                factors.add(factor);
+            }
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     public String getUser() {
         return user;
+    }
+
+    public boolean isLogedIn() {
+        return logedIn;
     }
 
     public void setUser(String user) {

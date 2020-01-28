@@ -6,15 +6,43 @@ import java.util.Calendar;
 
 public class Factor {
     private int id;
-    private int customer_id;
+    private String customer_id;
     private ArrayList<Food> foods;
     private String total_price;
     private Timestamp time;
     private String name;
 
 
+    public Factor(int id, String customer_id, String total_price, Timestamp time, String name) {
+        foods = new ArrayList<Food>();
+        this.id = id;
+        this.customer_id = customer_id;
+        this.total_price = total_price;
+        this.time = time;
+        this.name = name;
+    }
+
+    public boolean findFoodsOfFactor(){
+
+        String statement = SQLStatement.select("menu_factor","*","factor_id = \'"+id+"\'");
+        try {
+            ResultSet rs = DBConnection.myExcuteQuery(statement);
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                int price  = rs.getInt("price");
+                foods.add(new Food(id,name,price));
+            }
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     private boolean setNewId(){
-        String statement = SQLStatement.select("factor","max(id)");
+        String statement = SQLStatement.selectWithCond("factor","max(id)");
         try {
             PreparedStatement preparedStatement = DBConnection.connection.prepareStatement(statement);
             ResultSet rs = preparedStatement.executeQuery();
@@ -52,7 +80,7 @@ public class Factor {
         return false;
     }
 
-    public boolean addNewFactor(int customer_id,String name){
+    public boolean addNewFactor(String customer_id, String name){
         String statement;
         if(!setNewId())
             return false;
@@ -81,7 +109,7 @@ public class Factor {
             allDatas.add(id);
             allDatas.add(food.getId());
             allDatas.add(food.getName());
-            allDatas.add(food.getPrice());
+            allDatas.add(food.getPrice());//TODO price
             statement = SQLStatement.insert("menu_factor","factor_id,food_id,food_name,price");
             PreparedStatement preparedStatement = null;
 
@@ -98,6 +126,10 @@ public class Factor {
         return false;
     }
 
+
+    public int getId() {
+        return id;
+    }
 
     public ArrayList<Object> allDatas(){
         ArrayList<Object> objects = new ArrayList<Object>();

@@ -19,10 +19,18 @@ public class SQLStatement {
         }
         return "insert into "+table+" values("+values+")";
     }
-    public static String select(String table,String values,String cond){
-        return "select " + values +" from "+table +" where "+cond;
+    public static String select(String table, String values, String cond){
+        return "selectWithCond " + values +" from "+table +" where "+cond;
     }
-    public static String select(String table, String values){
-        return "select " + values +" from "+table ;
+    public static String selectWithCond(String table, String values, String cond, String extra){
+        if(extra == null)
+            return "selectWithCond " + values +" from "+table +" where "+cond;
+        else if(cond == null)
+            return "selectWithCond " + values +" from "+table + " " + extra;
+        return "selectWithCond " + values +" from "+table +" where "+cond + " " + extra;
+    }
+
+    public static String selectWithCond(String table, String values){
+        return "selectWithCond " + values +" from "+table ;
     }
 }

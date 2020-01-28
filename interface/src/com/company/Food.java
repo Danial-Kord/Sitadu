@@ -3,9 +3,7 @@ package com.company;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class Food {
     private int id;
@@ -25,7 +23,7 @@ public class Food {
     }
 
     private boolean setNewId(){
-        String statement = SQLStatement.select("menu","max(id)");
+        String statement = SQLStatement.selectWithCond("menu","max(id)");
         try {
             PreparedStatement preparedStatement = DBConnection.connection.prepareStatement(statement);
             ResultSet rs = preparedStatement.executeQuery();
@@ -61,7 +59,7 @@ public class Food {
     public static ArrayList<Food> findAllFoods(){
 
         ArrayList<Food> foods = new ArrayList<Food>();
-        String statement = SQLStatement.select("menu","*");
+        String statement = SQLStatement.selectWithCond("menu","*");
         try {
             ResultSet rs = DBConnection.myExcuteQuery(statement);
 
