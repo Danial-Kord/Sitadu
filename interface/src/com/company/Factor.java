@@ -12,7 +12,8 @@ public class Factor {
     private Timestamp time;
     private String name;
 
-    public boolean addNewFactorNoName(){
+
+    private boolean setNewId(){
         String statement = SQLStatement.select("factor","max(id)");
         try {
             PreparedStatement preparedStatement = DBConnection.connection.prepareStatement(statement);
@@ -21,6 +22,7 @@ public class Factor {
                 System.out.println("max factor id : "+rs.getInt(1));
                 id = rs.getInt(1)+1;
                 time = new Timestamp(Calendar.getInstance().getTime().getTime());
+                return true;
             }
             else {
                 System.out.println("some thing went wrong!");
@@ -28,6 +30,12 @@ public class Factor {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false;
+    }
+    public boolean addNewFactorNoName(){
+        if(!setNewId())
+            return false;
+        String statement;
         try{
             ArrayList<Object>allDatas = allDatas();
             allDatas.remove(customer_id);
@@ -45,23 +53,12 @@ public class Factor {
     }
 
     public boolean addNewFactor(int customer_id){
-        String statement = SQLStatement.select("factor","max(id)");
-        try {
-            PreparedStatement preparedStatement = DBConnection.connection.prepareStatement(statement);
-            ResultSet rs = preparedStatement.executeQuery();
-            if (rs.next()) {
-                System.out.println("max factor id : "+rs.getInt(1));
-                id = rs.getInt(1)+1;
-                time = new Timestamp(Calendar.getInstance().getTime().getTime());
-                this.customer_id = customer_id;
-            }
-            else {
-                System.out.println("some thing went wrong!");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        String statement;
+        if(!setNewId())
+            return false;
         try{
+            time = new Timestamp(Calendar.getInstance().getTime().getTime());
+            this.customer_id = customer_id;
             ArrayList<Object>allDatas = allDatas();
             statement = SQLStatement.insert("factor",allDatas.size());
             PreparedStatement preparedStatement = null;
