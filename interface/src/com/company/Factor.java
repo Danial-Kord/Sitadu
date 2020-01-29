@@ -11,7 +11,11 @@ public class Factor {
     private String total_price;
     private Timestamp time;
     private String name;
+    private int peyk_id;
 
+    public Factor(){
+
+    }
 
     public Factor(int id, String customer_id, String total_price, Timestamp time, String name) {
         foods = new ArrayList<Food>();
@@ -80,7 +84,7 @@ public class Factor {
         return false;
     }
 
-    public boolean addNewFactor(String customer_id, String name){
+    public boolean addNewFactor(String customer_id, String name,Peyk peyk){
         String statement;
         if(!setNewId())
             return false;
@@ -88,6 +92,7 @@ public class Factor {
             time = new Timestamp(Calendar.getInstance().getTime().getTime());
             this.customer_id = customer_id;
             this.name = name;
+            this.peyk_id = peyk.getId();
             ArrayList<Object>allDatas = allDatas();
             statement = SQLStatement.insert("factor",allDatas.size());
             PreparedStatement preparedStatement = null;
@@ -126,7 +131,9 @@ public class Factor {
         return false;
     }
 
-
+    public boolean remove() {
+        return SQLInstructions.remove("factor","id = \'" +id + "\'");
+    }
     public int getId() {
         return id;
     }
@@ -137,6 +144,7 @@ public class Factor {
         objects.add(customer_id);
         objects.add(name);
         objects.add(time);
+        objects.add(peyk_id);
         return objects;
     }
 }

@@ -13,6 +13,9 @@ public class Peyk {
     private String phone;
     int busy = 0;
 
+    public Peyk(){
+
+    }
     public Peyk(int id, String first_name, String last_name, String phone) {
         this.id = id;
         this.first_name = first_name;
@@ -54,6 +57,9 @@ public class Peyk {
             e.printStackTrace();
         }
         return false;
+    }
+    public boolean remove() {
+        return SQLInstructions.remove("peyk","id = \'" +id + "\'");
     }
     public ArrayList<Object> allDatas(){
         ArrayList<Object>objects = new ArrayList<Object>();

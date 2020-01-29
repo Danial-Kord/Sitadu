@@ -33,4 +33,10 @@ public class SQLStatement {
     public static String selectWithCond(String table, String values){
         return "selectWithCond " + values +" from "+table ;
     }
+    public static String delete(String table,String cond){
+        return "delete from "+table+" where "+cond;
+    }
+    public static String update(String table,String values,String cond){
+        return "update "+table+" set "+values + " " + cond;
+    }
 }

@@ -17,25 +17,14 @@ public class Sitadu {
         findAllFoods();
         account = new Account();
     }
-    public boolean delivary(Factor factor){
-        if(!account.isLogedIn())
+    public boolean delivary(){
+        Factor factor = new Factor();
+        if(!account.isLogedIn()) {
+            factor.addNewFactorNoName();
             return false;
-        Peyk peyk = findBestPeyk();
-        String statement = null;
-        PreparedStatement preparedStatement = null;
-        try {
-            ArrayList<Object> allDatas = new ArrayList<Object>();
-            allDatas.add(peyk.getId());
-            allDatas.add(factor.getId());
-            statement = SQLStatement.insert("delivery",allDatas.size());
-            preparedStatement = DBConnection.connection.prepareStatement(statement);
-            SQLTypeGenerator.setdata(preparedStatement,allDatas);
-            return preparedStatement.execute();
-        } catch (SQLException e) {
-            e.printStackTrace();
-
         }
-        return false;
+        Peyk peyk = findBestPeyk();
+        return factor.addNewFactor(account.getUser(),account.getFirst_name() + " " + account.getDefault_address(),peyk);
     }
 
     private boolean findAllPeyks(){
@@ -83,7 +72,7 @@ public class Sitadu {
 
     private Peyk findBestPeyk(){
         findAllPeyks();
-        String statement = SQLStatement.selectWithCond("delivery","* count(*) as mcount",null,"group by peyk_id order by mcount asc");
+        String statement = SQLStatement.selectWithCond("factor","* count(*) as mcount",null,"group by peyk_id order by mcount asc");
         try {
 //            ResultSet rs = DBConnection.myExcuteQuery(statement);
             PreparedStatement preparedStatement = DBConnection.connection.prepareStatement(statement);

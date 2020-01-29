@@ -6,13 +6,6 @@ show tables ;
 
 
 
-create table address(
-    id  int auto_increment,
-    name varchar(20),
-    address text,
-    house_phone_number char(7),
-    primary key (id)
-);
 
 
 create table customer
@@ -23,19 +16,38 @@ create table customer
     last_name  varchar(30) not null,
     melli_code char(10) not null,
     phone      char(7),
-    address_id int,
     age        int(3),
-    foreign key (address_id) references address(id),
     primary key (user)
+);
+
+
+create table address(
+    id  int auto_increment,
+    name varchar(20),
+    address text,
+    house_phone_number char(7),
+    customer_id varchar(20) ,
+    foreign key (customer_id) references customer(user) on delete cascade,
+    primary key (id)
+);
+
+create table peyk(
+    id int auto_increment,
+    first_name varchar(30) not null,
+    last_name  varchar(30) not null,
+    phone     int(7),
+    primary key (id)
 );
 create table factor(
     id int auto_increment,
     customer_id varchar(20)  null,
     name char(30) default null,
     time DATETIME,
+    peyk_id int null,
+    foreign key (peyk_id) references peyk(id) on delete set null ,
     primary key (id),
         FOREIGN KEY (customer_id)
-       REFERENCES customer(user)
+       REFERENCES customer(user) on delete cascade
 );
 
 create table menu(
@@ -47,29 +59,23 @@ primary key (id)
 create table menu_factor(
     id  int auto_increment,
     factor_id int,
-    food_id int,
+    food_id int null,
     food_name    varchar(30),
     price   int,
     primary key (id),
-    foreign key (factor_id) references factor(id),
-    foreign key (food_id) references menu(id)
+    foreign key (factor_id) references factor(id) on delete cascade ,
+    foreign key (food_id) references menu(id) on delete set null
 );
 
-create table peyk(
-    id int auto_increment,
-    first_name varchar(30) not null,
-    last_name  varchar(30) not null,
-    phone     int(7),
-    primary key (id)
-);
 
-create table delivery(
-    id int auto_increment,
-    peyk_id int,
-    factor_id int,
-    primary key (id),
-    foreign key (factor_id) references factor(id),
-    foreign key (peyk_id) references peyk(id)
+
+
+create table raw_material(
+id int auto_increment,
+name    varchar(30),
+price   int,
+primary key (id)
+
 );
 
 
@@ -78,3 +84,5 @@ create table log(#TODO
     information text,
     primary key (id)
 );
+
+

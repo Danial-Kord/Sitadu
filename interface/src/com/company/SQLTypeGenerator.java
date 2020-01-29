@@ -27,6 +27,9 @@ public class SQLTypeGenerator {
                 else if (object instanceof Integer) {
                     preparedStatement.setFloat(i+1,(int)object);
                 }
+                else if (object instanceof Boolean) {
+                    preparedStatement.setBoolean(i+1,(boolean)object);
+                }
                 else {
                     RuntimeException runtimeException = new RuntimeException();
                     throw runtimeException;

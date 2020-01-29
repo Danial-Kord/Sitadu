@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 
 public class Account {
@@ -14,10 +15,10 @@ public class Account {
     private String melli_code;
     private String phone;
     private int age;
-    private Address address;
+    private ArrayList<Address> address;
     private ArrayList<Factor>factors;
     private boolean logedIn = false;
-
+    private Address default_address;
 public boolean logIn(String user,String pass){
 
     String statement = SQLStatement.select("customer","*","user = \'"+user+"\' and pass = \'"+pass+"\'");
@@ -27,13 +28,15 @@ public boolean logIn(String user,String pass){
         //preparedStatement.setInt(1, Types.INTEGER);
         ResultSet rs = preparedStatement.executeQuery();
         if (rs.next()) {
+            this.user = user;
+            this.pass = pass;
             first_name = rs.getString("first_name");
             last_name = rs.getString("last_name");
             melli_code = rs.getString("melli_code");
             age = rs.getInt("age");
             phone = rs.getString("phone");
-            int addressId = rs.getInt("address_id");
-            logedIn = address.findAddress(addressId);
+            address = Address.findAddress(user);
+            logedIn = address != null;
             return logedIn;
         }
         else {
@@ -69,6 +72,7 @@ public boolean signUp(){
         statement = SQLStatement.insert("customer",allDatas.size());
         preparedStatement = DBConnection.connection.prepareStatement(statement);
         SQLTypeGenerator.setdata(preparedStatement,allDatas);
+        address = new ArrayList<Address>();
         return preparedStatement.execute();
     } catch (SQLException e) {
         e.printStackTrace();
@@ -77,6 +81,9 @@ public boolean signUp(){
     return false;
 }
 
+    public boolean removeAccount(){
+        return SQLInstructions.remove("account","user = \'" +user + "\'");
+    }
     public void setAge(int age) {
         this.age = age;
     }
@@ -89,7 +96,6 @@ public boolean signUp(){
         objects.add(last_name);
         objects.add(melli_code);
         objects.add(phone);
-        objects.add(address.getId());
         objects.add(age);
         return objects;
     }
@@ -118,6 +124,20 @@ public boolean signUp(){
         }
         return false;
     }
+
+    public Address getDefault_address() {
+        return default_address;
+    }
+
+    public boolean update(){
+    String values = String.format("pass = \'%s\', first_name = \'%s\', last_name = \'%s\'" +
+            ", melli_code = \'%s\', phone = \'%s\', age = \'%s\'",pass,first_name,last_name,melli_code,phone,age);
+    return SQLInstructions.update("customer",values,"user = \'"+user +"\'");
+    }
+    public ArrayList<Address> getAddress() {
+        return address;
+    }
+
     public String getUser() {
         return user;
     }
@@ -174,15 +194,6 @@ public boolean signUp(){
         return age;
     }
 
-
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
 
     public ArrayList<Factor> getFactors() {
         return factors;
