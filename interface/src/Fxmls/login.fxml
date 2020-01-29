@@ -20,18 +20,19 @@
       <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </left>
    <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-scale-shape: true;" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <Button alignment="CENTER" contentDisplay="CENTER" defaultButton="true" layoutX="66.0" layoutY="40.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="77.0" style="-fx-background-radius: 25px;" text="User" textAlignment="CENTER" />
             <Button alignment="CENTER" contentDisplay="CENTER" defaultButton="true" layoutX="272.0" layoutY="40.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="77.0" style="-fx-background-radius: 25px;" text="Admin" textAlignment="CENTER" />
             <Button alignment="CENTER" contentDisplay="CENTER" defaultButton="true" layoutX="148.0" layoutY="88.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="124.0" style="-fx-background-radius: 25px;" text="Log in" textAlignment="CENTER" />
             <Button alignment="CENTER" contentDisplay="CENTER" defaultButton="true" layoutX="148.0" layoutY="142.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="124.0" style="-fx-background-radius: 25px;" text="join as guest" textAlignment="CENTER" />
+            <Button alignment="CENTER" contentDisplay="CENTER" defaultButton="true" layoutX="148.0" layoutY="188.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="124.0" style="-fx-background-radius: 25px;" text="Sign Up" textAlignment="CENTER" />
             <TextField alignment="CENTER" editable="false" layoutX="14.0" layoutY="195.0" prefHeight="12.0" prefWidth="129.0" style="-fx-border-insets: 0 0  0 0;" text="Have'nt you join yet!">
                <font>
                   <Font name="System Bold Italic" size="10.0" />
                </font>
             </TextField>
-            <Button alignment="CENTER" contentDisplay="CENTER" defaultButton="true" layoutX="148.0" layoutY="188.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="124.0" style="-fx-background-radius: 25px;" text="Sign Up" textAlignment="CENTER" />
+            <Button alignment="CENTER" contentDisplay="CENTER" defaultButton="true" layoutX="172.0" layoutY="-4.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="77.0" style="-fx-background-radius: 25px;" text="Back" textAlignment="CENTER" />
          </children>
       </AnchorPane>
    </center>

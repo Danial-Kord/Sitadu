@@ -19,6 +19,7 @@ public class Account {
     private ArrayList<Factor>factors;
     private boolean logedIn = false;
     private Address default_address;
+    private boolean isAdmin = false;
 public boolean logIn(String user,String pass){
 
     String statement = SQLStatement.select("customer","*","user = \'"+user+"\' and pass = \'"+pass+"\'");
@@ -49,6 +50,20 @@ public boolean logIn(String user,String pass){
 
 }
 
+public boolean logIn(boolean admin,String user,String pass){
+    if(admin){
+        if(user.endsWith("root") && pass.endsWith("Dkm45477781")){
+            System.out.println("loged in as an  admin!");
+            isAdmin = true;
+            logedIn = true;
+            return true;
+        }
+    }
+    else {
+        return logIn(user,pass);
+    }
+    return false;
+}
 public void logIn(){
 logIn(user,pass);
 }
