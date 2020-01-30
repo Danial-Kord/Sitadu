@@ -19,9 +19,8 @@ public class Sitadu {
         account = new Account();
     }
 
-    public boolean logIn(boolean admin,String user,String pass){
-        return account.logIn(admin,user,pass);
-    }
+
+
     public boolean delivary(){
         Factor factor = new Factor();
         if(!account.isLogedIn()) {
@@ -52,6 +51,10 @@ public class Sitadu {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public Account getAccount() {
+        return account;
     }
 
     private boolean findAllFoods(){

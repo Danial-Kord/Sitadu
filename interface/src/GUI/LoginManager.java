@@ -1,17 +1,11 @@
-package com.company;
+package GUI;
 
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class LoginManager {
 
@@ -46,6 +40,7 @@ public class LoginManager {
         onAdminEnter();
         onBackEnter();
         onLoginEnter();
+        onSignUpEnter();
     }
 
     private void onAdminEnter(){
@@ -53,6 +48,14 @@ public class LoginManager {
             @Override
             public void handle(MouseEvent event) {
                 new LoginPanel(true);
+            }
+        });
+    }
+    private void onSignUpEnter(){
+        signUp.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                new SignUpPanel();
             }
         });
     }

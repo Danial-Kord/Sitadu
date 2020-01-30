@@ -68,8 +68,8 @@ public void logIn(){
 logIn(user,pass);
 }
 
-public boolean signUp(){
 
+public boolean settingUserPass(String user,String pass){
     String statement = SQLStatement.select("customer","user","user =\'"+user+"\'");
     try {
         ResultSet rs = DBConnection.myExcuteQuery(statement);
@@ -78,9 +78,17 @@ public boolean signUp(){
             System.out.println("user exists");
             return false;
         }
+        this.user = user;
+        this.pass = pass;
+        return true;
     } catch (SQLException e) {
         e.printStackTrace();
     }
+    return false;
+}
+public boolean signUp(){
+
+    String statement = null;
     PreparedStatement preparedStatement = null;
     try {
         ArrayList<Object> allDatas = allDatas();
@@ -90,7 +98,8 @@ public boolean signUp(){
         address = new ArrayList<Address>();
         return preparedStatement.execute();
     } catch (SQLException e) {
-        e.printStackTrace();
+        System.out.println(e.getLocalizedMessage());//TODO
+        //e.printStackTrace();
 
     }
     return false;

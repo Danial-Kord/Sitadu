@@ -1,4 +1,4 @@
-package com.company;
+package GUI;
 
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -22,7 +22,7 @@ public class LoginPanel {
         StackPane root = null;
         this.admin = admin;
         try {
-            root = FXMLLoader.load(getClass().getResource("..\\..\\Fxmls\\loginPane.fxml"));
+            root = FXMLLoader.load(getClass().getResource("Fxmls\\loginPane.fxml"));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -50,7 +50,7 @@ public class LoginPanel {
             public void handle(MouseEvent event) {
                 String userTest =  user.getText();
                 String passTest =  pass.getText();
-                GuiManager.sitadu.logIn(admin,userTest,passTest);
+                GuiManager.sitadu.getAccount().logIn(admin,userTest,passTest);
             }
         });
 

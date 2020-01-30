@@ -40,6 +40,15 @@
     -fx-background-position: center;
 
 }
+
+#regBackGround{
+    -fx-background-image: url("regBackGround.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+    -fx-background-position: center;
+
+}
+
 #backGroundRepeatChange{
     -fx-background-image: url("design2.jpg");
     -fx-background-size: 200px 100px;

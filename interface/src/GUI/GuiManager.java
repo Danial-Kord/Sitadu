@@ -1,13 +1,9 @@
-package com.company;
+package GUI;
 
+import com.company.Sitadu;
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -27,11 +23,11 @@ public class GuiManager extends Application {
         sitadu = new Sitadu();
         root = null;
         try {
-            root = FXMLLoader.load(getClass().getResource("..\\..\\Fxmls\\login.fxml"));
+            root = FXMLLoader.load(getClass().getResource("Fxmls\\login.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        root.getStylesheets().add("Fxmls/Danial.css");
+        root.getStylesheets().add("GUI/Fxmls/Danial.css");
         loginManager = new LoginManager();
         mainStage = primaryStage;
 
