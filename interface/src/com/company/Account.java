@@ -1,5 +1,9 @@
 package com.company;
 
+import GUI.AttentionPane;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,13 +18,30 @@ public class Account {
     private String last_name;
     private String melli_code;
     private String phone;
-    private int age;
+    private Integer age;
+    private String age1;
     private ArrayList<Address> address;
     private ArrayList<Factor>factors;
-    private boolean logedIn = false;
+    private boolean logedIn = true;
     private Address default_address;
-    private boolean isAdmin = false;
-public boolean logIn(String user,String pass){
+    private boolean isAdmin = true;//TODO
+
+    public Account(){
+
+    }
+    public Account(String user, String pass, String first_name, String last_name, String melli_code, String phone, Integer age) {
+        this.user = user;
+        this.pass = pass;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.melli_code = melli_code;
+        this.phone = phone;
+        this.age = age;
+        age1 = "" + age;
+      //  findAllFactors();
+    }
+
+    public boolean logIn(String user, String pass){
 
     String statement = SQLStatement.select("customer","*","user = \'"+user+"\' and pass = \'"+pass+"\'");
     try {
@@ -38,6 +59,7 @@ public boolean logIn(String user,String pass){
             phone = rs.getString("phone");
             address = Address.findAddress(user);
             logedIn = address != null;
+            age1 = ""+age;
             return logedIn;
         }
         else {
@@ -45,6 +67,8 @@ public boolean logIn(String user,String pass){
         }
     } catch (SQLException e) {
         e.printStackTrace();
+        AttentionPane.Error(e.getLocalizedMessage());
+
     }
     return false;
 
@@ -68,8 +92,11 @@ public void logIn(){
 logIn(user,pass);
 }
 
+    public boolean isAdmin() {
+        return isAdmin;
+    }
 
-public boolean settingUserPass(String user,String pass){
+    public boolean settingUserPass(String user, String pass){
     String statement = SQLStatement.select("customer","user","user =\'"+user+"\'");
     try {
         ResultSet rs = DBConnection.myExcuteQuery(statement);
@@ -83,9 +110,12 @@ public boolean settingUserPass(String user,String pass){
         return true;
     } catch (SQLException e) {
         e.printStackTrace();
+        AttentionPane.Error(e.getLocalizedMessage());
+
     }
     return false;
 }
+
 public boolean signUp(){
 
     String statement = null;
@@ -98,7 +128,8 @@ public boolean signUp(){
         address = new ArrayList<Address>();
         return preparedStatement.execute();
     } catch (SQLException e) {
-        System.out.println(e.getLocalizedMessage());//TODO
+        AttentionPane.Error(e.getLocalizedMessage());
+
         //e.printStackTrace();
 
     }
@@ -106,7 +137,8 @@ public boolean signUp(){
 }
 
     public boolean removeAccount(){
-        return SQLInstructions.remove("account","user = \'" +user + "\'");
+        System.out.println(user);
+        return SQLInstructions.remove("customer","user = \'" +user + "\'");
     }
     public void setAge(int age) {
         this.age = age;
@@ -144,6 +176,8 @@ public boolean signUp(){
             }
             return true;
         } catch (SQLException e) {
+            AttentionPane.Error(e.getLocalizedMessage());
+
             e.printStackTrace();
         }
         return false;
@@ -190,6 +224,20 @@ public boolean signUp(){
         this.first_name = first_name;
     }
 
+    public String getAge1() {
+        return age1;
+    }
+
+    public void setAge1(String age1) {
+        this.age1 = age1;
+        try {
+            age = Integer.parseInt(age1);
+        }
+        catch (NumberFormatException e){
+            AttentionPane.Error("number error");
+        }
+    }
+
     public String getLast_name() {
         return last_name;
     }
@@ -214,9 +262,15 @@ public boolean signUp(){
         this.phone = phone;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
+
+    public void setAge(Integer age) {
+        this.age = age;
+        age1 = ""+age;
+    }
+
 
 
     public ArrayList<Factor> getFactors() {

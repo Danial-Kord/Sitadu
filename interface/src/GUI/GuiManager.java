@@ -30,6 +30,8 @@ public class GuiManager extends Application {
         root.getStylesheets().add("GUI/Fxmls/Danial.css");
         loginManager = new LoginManager();
         mainStage = primaryStage;
+        new AttentionPane();
+        ManagementPanel managementPanel = new ManagementPanel();
 
         primaryStage.setTitle("Sitadu");
         primaryStage.setScene(new Scene(root, 800, 600));

@@ -4,6 +4,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -17,7 +18,7 @@ import java.io.IOException;
 public class SignUpPanel {
     private Button ok;
     private TextField user;
-    private TextField pass;
+    private PasswordField pass;
     private Text wrong_Pass;
     private Stage stage;
     public SignUpPanel(){
@@ -35,7 +36,7 @@ public class SignUpPanel {
         VBox vBox = (VBox)stackPane.getChildren().get(0);
         GridPane gridPane = (GridPane)vBox.getChildren().get(0);
         user = (TextField)gridPane.getChildren().get(2);
-        pass = (TextField)gridPane.getChildren().get(3);
+        pass = (PasswordField)gridPane.getChildren().get(3);
         ok = (Button) ((StackPane)(((StackPane)vBox.getChildren().get(1)))).getChildren().get(0);
         wrong_Pass = (Text)gridPane.getChildren().get(4);
         wrong_Pass.setVisible(false);
@@ -54,7 +55,8 @@ public class SignUpPanel {
             public void handle(MouseEvent event) {
                 String userTest =  user.getText();
                 String passTest =  pass.getText();
-                if(GuiManager.sitadu.getAccount().settingUserPass(userTest,passTest)){
+
+                if(GuiManager.sitadu.getAccount().settingUserPass(userTest,passTest) && !passTest.endsWith("")){
                     wrong_Pass.setVisible(false);
                     stage.close();
                     new Registration();

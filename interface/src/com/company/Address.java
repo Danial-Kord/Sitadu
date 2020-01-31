@@ -1,5 +1,7 @@
 package com.company;
 
+import GUI.AttentionPane;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,6 +10,7 @@ import java.util.ArrayList;
 public class Address {
     private Integer id;
     private String name;
+    private String id1;
     private String address;
     private String house_phone_number;
     private String customer_id;
@@ -22,10 +25,11 @@ public class Address {
         this.address = address;
         this.house_phone_number = house_phone_number;
         this.customer_id = customer_id;
+        id1 = ""+id;
     }
 
-    public void addToDataBase(String customer_id){
-        String statement = SQLStatement.selectWithCond("address","max(id)");
+    public boolean addToDataBase(String customer_id){
+        String statement = SQLStatement.select("address","max(id)");
         try {
 //            ResultSet rs = DBConnection.myExcuteQuery(statement);
             PreparedStatement preparedStatement = DBConnection.connection.prepareStatement(statement);
@@ -41,6 +45,8 @@ public class Address {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            AttentionPane.Error(e.getLocalizedMessage());
+
         }
         try{
             ArrayList<Object> objects = allDatas();
@@ -50,12 +56,37 @@ public class Address {
                 preparedStatement = DBConnection.connection.prepareStatement(statement);
                 SQLTypeGenerator.setdata(preparedStatement,objects);
                 preparedStatement.execute();
+                return true;
 
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+            AttentionPane.Error(e.getLocalizedMessage());
 
+        }
+        return false;
     }
+
+    public void setCustomer_id(String customer_id) {
+        this.customer_id = customer_id;
+    }
+
+    public String getCustomer_id() {
+        return customer_id;
+    }
+    public void setId1(String id1) {
+        try {
+            id = Integer.parseInt(id1);
+        }
+        catch (NumberFormatException e){
+            AttentionPane.Error(e.getLocalizedMessage());
+        }
+        this.id1 = id1;
+    }
+
+    public String getId1() {
+        return id1;
+    }
+
 
     public static ArrayList<Address> findAddress(String user){
         ArrayList<Address>addresses = new ArrayList<Address>();
@@ -77,6 +108,8 @@ public class Address {
                 return addresses;
         } catch (SQLException e) {
             e.printStackTrace();
+            AttentionPane.Error(e.getLocalizedMessage());
+
         }
         return addresses;
     }
@@ -87,7 +120,9 @@ public class Address {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Integer id)
+    {
+        id1 = ""+id;
         this.id = id;
     }
 
@@ -111,6 +146,10 @@ public class Address {
         return house_phone_number;
     }
 
+
+    public boolean setnewAddress(){
+        return addToDataBase(customer_id);
+    }
     public void setHouse_phone_number(String house_phone_number) {
         this.house_phone_number = house_phone_number;
     }
@@ -122,5 +161,11 @@ public class Address {
         objects.add(house_phone_number);
         objects.add(customer_id);
         return objects;
+    }
+
+    public boolean update(){
+        String values = String.format("name  = \'%s\',id  = \'%s\', address  = \'%s\',house_phone_number  = \'%s\', customer_id  = \'%s\'" +
+                "",name,id,address,house_phone_number,customer_id);
+        return SQLInstructions.update("menu",values,"id = \'"+id +"\'");
     }
 }

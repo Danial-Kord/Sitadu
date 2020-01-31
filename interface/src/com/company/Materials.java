@@ -1,5 +1,7 @@
 package com.company;
 
+import GUI.AttentionPane;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,21 +11,26 @@ public class Materials {
     protected int id;
     protected String name;
     protected int price;
+    private String id1;
+    private String price1;
 
+    public Materials(){}
     public Materials(String name, int price) {
         this.name = name;
         this.price = price;
-
+        price1 = ""+price;
     }
 
     public Materials(int id, String name, int price) {
         this.id = id;
         this.name = name;
         this.price = price;
+        price1 = ""+price;
+        id1 = ""+id;
     }
 
     protected boolean setNewId(String table){
-        String statement = SQLStatement.selectWithCond(table,"max(id)");
+        String statement = SQLStatement.select(table,"max(id)");
         try {
             PreparedStatement preparedStatement = DBConnection.connection.prepareStatement(statement);
             ResultSet rs = preparedStatement.executeQuery();
@@ -37,11 +44,15 @@ public class Materials {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            AttentionPane.Error(e.getLocalizedMessage());
+
         }
         return false;
     }
 
     public boolean updateDataBase(String table){
+        if(!setNewId(table))
+            return false;
         String statement;
         PreparedStatement preparedStatement = null;
         try {
@@ -52,16 +63,45 @@ public class Materials {
             return preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
+            AttentionPane.Error(e.getLocalizedMessage());
+
 
         }
         return false;
     }
 
+    public void setId1(String id1) {
+        try {
+            id = Integer.parseInt(id1);
+        }
+        catch (NumberFormatException e){
+            AttentionPane.Error(e.getLocalizedMessage());
+        }
+        this.id1 = id1;
+    }
 
-//    public static ArrayList<Food> findAllFoods(String table){
+    public String getPrice1() {
+        return price1;
+    }
+
+    public void setPrice1(String id1) {
+        try {
+            price = Integer.parseInt(id1);
+        }
+        catch (NumberFormatException e){
+            AttentionPane.Error(e.getLocalizedMessage());
+        }
+        this.price1 = price1;
+    }
+
+    public String getId1() {
+        return id1;
+    }
+
+    //    public static ArrayList<Food> findAllFoods(String table){
 //
 //        ArrayList<Food> foods = new ArrayList<Food>();
-//        String statement = SQLStatement.selectWithCond(table,"*");
+//        String statement = SQLStatement.select(table,"*");
 //        try {
 //            ResultSet rs = DBConnection.myExcuteQuery(statement);
 //
@@ -100,6 +140,7 @@ public class Materials {
 
     public void setPrice(int price) {
         this.price = price;
+        price1 = ""+price;
     }
 
     public ArrayList<Object> allDatas(){
@@ -109,4 +150,10 @@ public class Materials {
         objects.add(price);
         return objects;
     }
+
+    public void setId(int id) {
+        id1 = ""+id;
+        this.id = id;
+    }
+
 }

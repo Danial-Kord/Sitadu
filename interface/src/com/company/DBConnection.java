@@ -1,6 +1,8 @@
 
 package com.company;
 
+import GUI.AttentionPane;
+
 import java.sql.*;
 
 
@@ -22,9 +24,13 @@ public class DBConnection {
         catch (SQLException e) {
             System.out.println("couldn't build statement object");
             e.printStackTrace();
+            AttentionPane.Error(e.getLocalizedMessage());
+
         }
         catch (ClassNotFoundException e) {
             e.printStackTrace();
+            AttentionPane.Error(e.getLocalizedMessage());
+
         }
 
     }
@@ -34,6 +40,8 @@ public class DBConnection {
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("problem  on calling excute update with sent request! : "+request);
+            AttentionPane.Error(e.getLocalizedMessage());
+
         }
         return -1;
     }
@@ -43,6 +51,8 @@ public class DBConnection {
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("problem  on calling excute query with sent request! : "+request);
+            AttentionPane.Error(e.getLocalizedMessage());
+
         }
         return null;
     }

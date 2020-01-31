@@ -22,7 +22,7 @@ public class SQLStatement {
     public static String select(String table, String values, String cond){
         return "select " + values +" from "+table +" where "+cond;
     }
-    public static String selectWithCond(String table, String values, String cond, String extra){
+    public static String select(String table, String values, String cond, String extra){
         if(extra == null)
             return "select " + values +" from "+table +" where "+cond;
         else if(cond == null)
@@ -30,13 +30,13 @@ public class SQLStatement {
         return "select " + values +" from "+table +" where "+cond + " " + extra;
     }
 
-    public static String selectWithCond(String table, String values){
+    public static String select(String table, String values){
         return "select " + values +" from "+table ;
     }
     public static String delete(String table,String cond){
         return "delete from "+table+" where "+cond;
     }
     public static String update(String table,String values,String cond){
-        return "update "+table+" set "+values + " " + cond;
+        return "update "+table+" set "+values + " where " + cond;
     }
 }

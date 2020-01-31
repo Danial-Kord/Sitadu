@@ -50,7 +50,12 @@ public class LoginPanel {
             public void handle(MouseEvent event) {
                 String userTest =  user.getText();
                 String passTest =  pass.getText();
-                GuiManager.sitadu.getAccount().logIn(admin,userTest,passTest);
+                if(GuiManager.sitadu.getAccount().logIn(admin,userTest,passTest)){
+
+                }
+                else {
+                    AttentionPane.warning("Wrong user or passWord!");
+                }
             }
         });
 

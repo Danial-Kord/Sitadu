@@ -19,8 +19,7 @@
                 <Label text="Username:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                 <Label text="Password:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                 <TextField fx:id="user" promptText="Type here username..." GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                <TextField fx:id="password" promptText="Type here passWord..." GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="repetetive username!" textAlignment="CENTER" wrappingWidth="143.6708984375" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Text boundsType="LOGICAL_VERTICAL_CENTER" strokeType="OUTSIDE" strokeWidth="0.0" text="repetetive username!" textAlignment="CENTER" wrappingWidth="213.6708984375" GridPane.rowIndex="1">
                            <fill>
                               <LinearGradient endX="1.0" endY="1.0" startX="0.6456310679611651">
                                  <stops>
@@ -30,6 +29,7 @@
                               </LinearGradient>
                            </fill>
                         </Text>
+                        <PasswordField GridPane.columnIndex="1" GridPane.rowIndex="2" />
               </children>
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="148.0" minWidth="10.0" prefWidth="109.0" />

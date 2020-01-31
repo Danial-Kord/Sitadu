@@ -1,5 +1,8 @@
 package com.company;
 
+import GUI.AttentionPane;
+import GUI.GuiManager;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,12 +44,14 @@ public class Factor {
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            AttentionPane.Error(e.getLocalizedMessage());
+
         }
         return false;
     }
 
     private boolean setNewId(){
-        String statement = SQLStatement.selectWithCond("factor","max(id)");
+        String statement = SQLStatement.select("factor","max(id)");
         try {
             PreparedStatement preparedStatement = DBConnection.connection.prepareStatement(statement);
             ResultSet rs = preparedStatement.executeQuery();
@@ -61,12 +66,15 @@ public class Factor {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            AttentionPane.Error(e.getLocalizedMessage());
+
         }
         return false;
     }
     public boolean addNewFactorNoName(){
         if(!setNewId())
             return false;
+
         String statement;
         try{
             ArrayList<Object>allDatas = allDatas();
@@ -80,14 +88,23 @@ public class Factor {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            AttentionPane.Error(e.getLocalizedMessage());
+
         }
         return false;
     }
+
+
+
 
     public boolean addNewFactor(String customer_id, String name,Peyk peyk){
         String statement;
         if(!setNewId())
             return false;
+        if(customer_id == null)
+            return addNewFactorNoName();
+        if(customer_id.endsWith(""))
+            return addNewFactorNoName();
         try{
             time = new Timestamp(Calendar.getInstance().getTime().getTime());
             this.customer_id = customer_id;
@@ -103,6 +120,8 @@ public class Factor {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            AttentionPane.Error(e.getLocalizedMessage());
+
         }
         return false;
     }
@@ -127,6 +146,8 @@ public class Factor {
 
         } catch (SQLException e) {
             e.printStackTrace();
+            AttentionPane.Error(e.getLocalizedMessage());
+
         }
         return false;
     }
@@ -146,5 +167,57 @@ public class Factor {
         objects.add(time);
         objects.add(peyk_id);
         return objects;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getCustomer_id() {
+        return customer_id;
+    }
+
+    public void setCustomer_id(String customer_id) {
+        this.customer_id = customer_id;
+    }
+
+    public ArrayList<Food> getFoods() {
+        return foods;
+    }
+
+    public void setFoods(ArrayList<Food> foods) {
+        this.foods = foods;
+    }
+
+    public String getTotal_price() {
+        return total_price;
+    }
+
+    public void setTotal_price(String total_price) {
+        this.total_price = total_price;
+    }
+
+    public Timestamp getTime() {
+        return time;
+    }
+
+    public void setTime(Timestamp time) {
+        this.time = time;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getPeyk_id() {
+        return peyk_id;
+    }
+
+    public void setPeyk_id(int peyk_id) {
+        this.peyk_id = peyk_id;
     }
 }

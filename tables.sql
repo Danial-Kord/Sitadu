@@ -14,13 +14,15 @@ create table customer
     pass    varchar(30) not null ,
     first_name varchar(30) not null,
     last_name  varchar(30) not null,
-    melli_code char(10) not null,
-    phone      char(7),
+    melli_code char(10) not null check ( melli_code  like '%[^0-9]%'),
+    phone      char(7)  check ( phone  like '%[^0-9]%'),
     age        int(3),
-    check ( melli_code like '%[^0-9]%'),
-    check ( phone like '%[^0-9]%'),
+
     primary key (user)
 );
+
+insert into customer values ("sdwdsad", "pass", "first_name", "last_name", "melfgcode", "phone", 22) ;
+select * from customer;
 
 
 create table address(

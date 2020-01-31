@@ -1,5 +1,7 @@
 package com.company;
 
+import GUI.AttentionPane;
+
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -16,6 +18,7 @@ public class SQLInstructions {
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            AttentionPane.Error(e.getLocalizedMessage());
         }
        return false;
     }
@@ -28,6 +31,7 @@ public class SQLInstructions {
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            AttentionPane.Error(e.getLocalizedMessage());
         }
         return false;
     }
