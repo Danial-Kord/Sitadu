@@ -242,6 +242,9 @@ public class RawMaterialTable {
 
         @Override
         public void handle(ActionEvent e) {
+            RawMaterial account =  table.getSelectionModel().getSelectedItem();
+            if(account!=null)
+                account.update();
             data = getInitialTableData();
             table.setItems(data);
         }

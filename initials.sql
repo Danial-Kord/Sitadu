@@ -11,6 +11,10 @@ select * from factor;
 select *
 from menu_factor;
 
+
+insert into factor(id, customer_id, name, time, peyk_id, total_price)
+
+
 insert into menu values (21,"dsda",2);
 
 insert into menu_factor values (212,3313,21,"dada",31);

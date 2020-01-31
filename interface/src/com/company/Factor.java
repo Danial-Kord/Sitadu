@@ -15,18 +15,38 @@ public class Factor {
     private Timestamp time;
     private String name;
     private int peyk_id;
+    private String id1;
+    private String peyk_id1;
+    private String time1;
 
     public Factor(){
 
     }
 
-    public Factor(int id, String customer_id, String total_price, Timestamp time, String name) {
+    public Factor(int id, String customer_id, String total_price, Timestamp time, String name,String peyk_id) {
         foods = new ArrayList<Food>();
         this.id = id;
         this.customer_id = customer_id;
         this.total_price = total_price;
         this.time = time;
         this.name = name;
+        id1 = ""+ id;
+        peyk_id1 = ""+peyk_id;
+        if(time!=null)
+        time1 = "" +time.toString();
+    }
+
+
+    public String getId1() {
+        return id1;
+    }
+
+    public String getPeyk_id1() {
+        return peyk_id1;
+    }
+
+    public String getTime1() {
+        return time1;
     }
 
     public boolean findFoodsOfFactor(){
@@ -37,9 +57,10 @@ public class Factor {
 
             while (rs.next()) {
                 int id = rs.getInt("id");
-                String name = rs.getString("name");
+                String food_name = rs.getString("food_name");
                 int price  = rs.getInt("price");
-                foods.add(new Food(id,name,price));
+                int food_id = rs.getInt("food_id");
+                foods.add(new Food(id,food_name,price));
             }
             return true;
         } catch (SQLException e) {
@@ -72,6 +93,8 @@ public class Factor {
         return false;
     }
     public boolean addNewFactorNoName(){
+        System.out.println("ggggg");
+
         if(!setNewId())
             return false;
 
@@ -79,7 +102,9 @@ public class Factor {
         try{
             ArrayList<Object>allDatas = allDatas();
             allDatas.remove(customer_id);
-            statement = SQLStatement.insert("factor","id,name,time");
+            allDatas.remove(peyk_id);
+            allDatas.remove(time);
+            statement = SQLStatement.insert("factor","id, name, total_price");
             PreparedStatement preparedStatement = null;
             time = new Timestamp(Calendar.getInstance().getTime().getTime());
             preparedStatement = DBConnection.connection.prepareStatement(statement);
@@ -98,12 +123,13 @@ public class Factor {
 
 
     public boolean addNewFactor(String customer_id, String name,Peyk peyk){
+        System.out.println("ffffff");
         String statement;
         if(!setNewId())
             return false;
         if(customer_id == null)
             return addNewFactorNoName();
-        if(customer_id.endsWith(""))
+        if(customer_id.equals(""))
             return addNewFactorNoName();
         try{
             time = new Timestamp(Calendar.getInstance().getTime().getTime());
@@ -116,16 +142,23 @@ public class Factor {
 
             preparedStatement = DBConnection.connection.prepareStatement(statement);
             SQLTypeGenerator.setdata(preparedStatement,allDatas);
-            return preparedStatement.execute();
+            System.out.println("shit");
+            preparedStatement.execute();
+            return true;
 
         } catch (SQLException e) {
             e.printStackTrace();
             AttentionPane.Error(e.getLocalizedMessage());
 
         }
+        System.out.println("fffuk");
         return false;
     }
-
+    public boolean update(){
+        String values = String.format("name  = \'%s\', total_price  = \'%s\', customer_id  = \'%s\'" +
+                ", time  = \'%s\', peyk_id  = \'%s\'",name,total_price,customer_id,time,peyk_id);
+        return SQLInstructions.update("factor",values,"id = \'"+id +"\'");
+    }
     public boolean addFoodToFactor(Food food){
         String statement;
         try{
@@ -152,6 +185,11 @@ public class Factor {
         return false;
     }
 
+    public boolean removeFoodToFactor(Food food){
+        //TODO
+        return false;
+    }
+
     public boolean remove() {
         return SQLInstructions.remove("factor","id = \'" +id + "\'");
     }
@@ -166,6 +204,7 @@ public class Factor {
         objects.add(name);
         objects.add(time);
         objects.add(peyk_id);
+        objects.add(total_price);
         return objects;
     }
 

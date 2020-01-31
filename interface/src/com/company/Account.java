@@ -27,7 +27,7 @@ public class Account {
     private boolean isAdmin = true;//TODO
 
     public Account(){
-
+        logedIn = true;
     }
     public Account(String user, String pass, String first_name, String last_name, String melli_code, String phone, Integer age) {
         this.user = user;
@@ -157,9 +157,10 @@ public boolean signUp(){
     }
 
     public boolean findAllFactors(){
+        factors = new ArrayList<>();
         if(!logedIn)
             return false;
-        String statement = SQLStatement.select("facor","*","customer_id = \'"+user+"\'");
+        String statement = SQLStatement.select("factor","*","customer_id = \'"+user+"\'");
         try {
 //            ResultSet rs = DBConnection.myExcuteQuery(statement);
             PreparedStatement preparedStatement = DBConnection.connection.prepareStatement(statement);
@@ -170,7 +171,8 @@ public boolean signUp(){
                 String total_price = rs.getString("total_price");
                 Timestamp time = rs.getTimestamp("time");
                 String name = rs.getString("name");
-                Factor factor = new Factor(id,user,total_price,time,name);
+                String peyk_id = rs.getString("peyk_id");
+                Factor factor = new Factor(id,user,total_price,time,name,peyk_id);
                 factor.findFoodsOfFactor();
                 factors.add(factor);
             }
@@ -182,6 +184,10 @@ public boolean signUp(){
         }
         return false;
     }
+
+
+
+
 
     public Address getDefault_address() {
         return default_address;

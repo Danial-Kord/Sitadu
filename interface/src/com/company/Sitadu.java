@@ -62,7 +62,8 @@ public class Sitadu {
                 Timestamp time = rs.getTimestamp("time");
                 String name = rs.getString("name");
                 String total_price = rs.getString("total_price");
-                factors.add(new Factor(id,customer_id,total_price,time,name));
+                String peyk_id = rs.getString("peyk_id");
+                factors.add(new Factor(id,customer_id,total_price,time,name,peyk_id));
             }
             return true;
         } catch (SQLException e) {
@@ -107,15 +108,45 @@ public class Sitadu {
         }
         return null;
     }
-    public boolean delivary(){
+    public Factor delivary(){
+        return delivary(account);
+    }
+
+    public Factor delivary(Account account){
         Factor factor = new Factor();
         if(!account.isLogedIn()) {
             factor.addNewFactorNoName();
-            return false;
+            return factor;
         }
         Peyk peyk = findBestPeyk();
-        return factor.addNewFactor(account.getUser(),account.getFirst_name() + " " + account.getDefault_address(),peyk);
+        if(factor.addNewFactor(account.getUser(),account.getFirst_name(),peyk)) {
+            System.out.println("OMG");
+            return factor;
+        }
+        return null;
     }
+
+    public ArrayList<Log> getLogs(){
+        ArrayList<Log>out = new ArrayList<>();
+        String statement = SQLStatement.select("log","information");
+        try {
+//            ResultSet rs = DBConnection.myExcuteQuery(statement);
+            PreparedStatement preparedStatement = DBConnection.connection.prepareStatement(statement);
+            //preparedStatement.setInt(1, Types.INTEGER);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                String s = rs.getString("information");
+                out.add(new Log(s));
+            }
+            return out;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            AttentionPane.Error(e.getLocalizedMessage());
+
+        }
+        return out;
+    }
+
 
     private boolean findAllPeyks(){
         peyks = new ArrayList<Peyk>();
@@ -217,27 +248,27 @@ public class Sitadu {
     }
 
     private Peyk findBestPeyk(){
+
+
+
         findAllPeyks();
-        String statement = SQLStatement.select("factor","* count(*) as mcount",null,"group by peyk_id order by mcount asc");
-        try {
-//            ResultSet rs = DBConnection.myExcuteQuery(statement);
-            PreparedStatement preparedStatement = DBConnection.connection.prepareStatement(statement);
-            //preparedStatement.setInt(1, Types.INTEGER);
-            ResultSet rs = preparedStatement.executeQuery();
-            if (rs.next()) {
-                int id = rs.getInt("id");
-                for (int i=0;i<peyks.size();i++){
-                    if(peyks.get(i).getId() == id){
-                        return peyks.get(i);
-                    }
+        Peyk best = peyks.get(0);
+        ArrayList<Peyk> checked = new ArrayList<>();
+        for (int i=0;i<peyks.size();i++){
+            Peyk temp = peyks.get(i);
+            for (int j=1;j<peyks.size();j++){
+                if(temp.getId() == peyks.get(j).getId() && ! checked.contains(temp)){
+                    temp.setBusy(temp.busy++);
                 }
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            AttentionPane.Error(e.getLocalizedMessage());
+            checked.add(temp);
 
         }
-        return null;
+        for (int i=1;i<peyks.size();i++){
+            if(best.getBusy() < peyks.get(i).getBusy()){
+                best= peyks.get(i);
+            }
+        }
+        return best;
     }
 }

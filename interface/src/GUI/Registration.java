@@ -73,7 +73,7 @@ public class Registration {
                     }
                 }
                 catch (NumberFormatException e){
-
+                    AttentionPane.Error("wrong input");
                 }
             }
         });

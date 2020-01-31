@@ -1,5 +1,7 @@
 package GUI;
 
+import GUI.AttentionPane;
+import GUI.GuiManager;
 import com.company.Address;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -252,6 +254,9 @@ public class AddressTable {
 
         @Override
         public void handle(ActionEvent e) {
+            Address account =  table.getSelectionModel().getSelectedItem();
+            if(account!=null)
+                account.update();
             data = getInitialTableData();
             table.setItems(data);
         }

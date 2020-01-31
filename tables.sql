@@ -14,8 +14,9 @@ create table customer
     pass    varchar(30) not null ,
     first_name varchar(30) not null,
     last_name  varchar(30) not null,
-    melli_code char(10) not null check ( melli_code  like '%[^0-9]%'),
-    phone      char(7)  check ( phone  like '%[^0-9]%'),
+    melli_code char(10) not null check ( melli_code  like '[0-9]'),
+    phone      char(7)  ,
+    check ( phone  like '[0-9]'),
     age        int(3),
 
     primary key (user)
@@ -32,7 +33,7 @@ create table address(
     house_phone_number char(7),
     customer_id varchar(20) ,
     check ( house_phone_number like '%[^0-9]%'),
-    foreign key (customer_id) references customer(user) on delete cascade,
+    foreign key (customer_id) references customer(user)on delete cascade on update cascade ,
     primary key (id)
 );
 
@@ -48,12 +49,13 @@ create table factor(
     id int auto_increment,
     customer_id varchar(20)  null,
     name char(30) default null,
-    time DATETIME default current_timestamp,
+    time timestamp default current_timestamp,
     peyk_id int null,
-    foreign key (peyk_id) references peyk(id) on delete set null ,
+    total_price varchar(50) null,
+    foreign key (peyk_id) references peyk(id) on delete set null  on update cascade ,
     primary key (id),
         FOREIGN KEY (customer_id)
-       REFERENCES customer(user) on delete cascade
+       REFERENCES customer(user) on delete cascade on update cascade
 );
 
 create table menu(
@@ -69,8 +71,8 @@ create table menu_factor(
     food_name    varchar(30),
     price   int,
     primary key (id),
-    foreign key (factor_id) references factor(id) on delete cascade ,
-    foreign key (food_id) references menu(id) on delete set null
+    foreign key (factor_id) references factor(id) on delete cascade on update cascade ,
+    foreign key (food_id) references menu(id)on delete cascade on update cascade
 );
 
 

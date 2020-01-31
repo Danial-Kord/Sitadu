@@ -67,8 +67,6 @@ public class FactorTable {
                 new RowSelectChangeListener());
 
         // Add and delete buttons
-        Button addbtn = new Button("Add");
-        addbtn.setOnAction(new AddButtonListener());
         Button delbtn = new Button("Delete");
         delbtn.setOnAction(new DeleteButtonListener());
         Button refbtn = new Button("refresh");
@@ -77,7 +75,7 @@ public class FactorTable {
         save.setOnAction(new SaveButtonListener());
         HBox buttonHb = new HBox(10);
         buttonHb.setAlignment(Pos.CENTER);
-        buttonHb.getChildren().addAll(addbtn, delbtn,refbtn,save);
+        buttonHb.getChildren().addAll(delbtn,refbtn,save);
 
         // Status message text
         actionStatus = new Text();
@@ -117,13 +115,9 @@ public class FactorTable {
             }
         });
 
-
-
-        TableColumn<Factor, String> customer_id =
-                new TableColumn<>("customer_id");
-        customer_id.setCellValueFactory(
-                new PropertyValueFactory<Factor,
-                        String>("customer_id"));
+        TableColumn customer_id = new TableColumn("customer_id");
+        customer_id.setCellValueFactory(new PropertyValueFactory<Factor, String>("customer_id"));
+        customer_id.setCellFactory(TextFieldTableCell.forTableColumn());
         customer_id.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Factor, String>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<Factor, String> t) {
@@ -134,40 +128,28 @@ public class FactorTable {
             }
         });
 
+        TableColumn time1 = new TableColumn("time");
+        time1.setCellValueFactory(new PropertyValueFactory<Factor, String>("time1"));
+        time1.setCellFactory(TextFieldTableCell.forTableColumn());
+        time1.setEditable(false);
 
-        TableColumn<Factor, Integer> id =
-                new TableColumn<>("id");
-        id.setCellValueFactory(
-                new PropertyValueFactory<Factor,
-                        Integer>("id"));
-        id.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Factor, Integer>>() {
-            @Override
-            public void handle(TableColumn.CellEditEvent<Factor, Integer> t) {
+        TableColumn id1 = new TableColumn("id");
+        id1.setCellValueFactory(new PropertyValueFactory<Factor, String>("id1"));
+        id1.setCellFactory(TextFieldTableCell.forTableColumn());
+        id1.setEditable(false);
 
-                ((Factor) t.getTableView().getItems().get(
-                        t.getTablePosition().getRow())
-                ).setId(t.getNewValue());
-            }
-        });
+        TableColumn peyk_id1 = new TableColumn("peyk_id");
+        peyk_id1.setCellValueFactory(new PropertyValueFactory<Factor, String>("peyk_id1"));
+        peyk_id1.setCellFactory(TextFieldTableCell.forTableColumn());
+        peyk_id1.setEditable(false);
 
-
-        TableColumn<Factor, Timestamp> time =
-                new TableColumn<>("time");
-        time.setCellValueFactory(
-                new PropertyValueFactory<Factor,
-                        Timestamp>("price"));
-        time.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Factor, Timestamp>>() {
-            @Override
-            public void handle(TableColumn.CellEditEvent<Factor, Timestamp> t) {
-
-                ((Factor) t.getTableView().getItems().get(
-                        t.getTablePosition().getRow())
-                ).setTime(t.getNewValue());
-            }
-        });
+        TableColumn total_price = new TableColumn("total_price");
+        total_price.setCellValueFactory(new PropertyValueFactory<Factor, String>("total_price"));
+        total_price.setCellFactory(TextFieldTableCell.forTableColumn());
+        total_price.setEditable(false);
 
 
-        table.getColumns().setAll(id, name,time,customer_id);
+        table.getColumns().setAll(id1, name,time1,peyk_id1,customer_id,total_price);
     }
     private class RowSelectChangeListener implements ChangeListener<Number> {
 
@@ -198,16 +180,6 @@ public class FactorTable {
         ObservableList<Factor> data = FXCollections.observableList(list);
 
         return data;
-    }
-
-    private class AddButtonListener implements EventHandler<ActionEvent> {
-
-        @Override
-        public void handle(ActionEvent e) {
-
-            // Create a new row after last row
-            //TODO
-        }
     }
 
 
@@ -265,6 +237,9 @@ public class FactorTable {
 
         @Override
         public void handle(ActionEvent e) {
+            Factor account =  table.getSelectionModel().getSelectedItem();
+            if(account!=null)
+                account.update();
             data = getInitialTableData();
             table.setItems(data);
         }

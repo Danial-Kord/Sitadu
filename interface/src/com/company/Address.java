@@ -166,6 +166,6 @@ public class Address {
     public boolean update(){
         String values = String.format("name  = \'%s\',id  = \'%s\', address  = \'%s\',house_phone_number  = \'%s\', customer_id  = \'%s\'" +
                 "",name,id,address,house_phone_number,customer_id);
-        return SQLInstructions.update("menu",values,"id = \'"+id +"\'");
+        return SQLInstructions.update("address",values,"id = \'"+id +"\'");
     }
 }

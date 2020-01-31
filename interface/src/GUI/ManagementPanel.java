@@ -1,6 +1,5 @@
 package GUI;
 
-import GUI.AddressTable;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
@@ -53,7 +52,11 @@ public class ManagementPanel {
         AddressTable addressTable = new AddressTable();
         addressTable.isitials(tab5);
 
-        primaryStage.setScene(new Scene(root, 400, 140));
+        Tab tab6 = tabPane.getTabs().get(3);
+        LogTable logTable = new LogTable();
+        logTable.isitials(tab6);
+
+        primaryStage.setScene(new Scene(root, 800, 600));
         System.out.println("show");
         primaryStage.show();
     }

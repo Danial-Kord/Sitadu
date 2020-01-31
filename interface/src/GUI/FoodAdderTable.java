@@ -1,5 +1,8 @@
 package GUI;
 
+
+
+import com.company.Factor;
 import com.company.Food;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -28,18 +31,48 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MenuTable {
+public class FoodAdderTable {
+
+    private TableView<Food> table2;
+    private ObservableList<Food> data2;
     private TableView<Food> table;
     private ObservableList<Food> data;
     private Text actionStatus;
+    private Factor factor;
     private ArrayList<Food> lastAdded = new ArrayList<>();
-    public MenuTable(){
+    public FoodAdderTable(Factor factor){
+        System.out.println(factor);
+        this.factor = factor;
+        Stage primaryStage = new Stage();
+        primaryStage.setTitle("ControlManagement");
 
+
+        BorderPane root = null;
+        try {
+            root = FXMLLoader.load(getClass().getResource("Fxmls\\foodAdd.fxml"));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        root.getStylesheets().add("GUI/Fxmls/Danial.css");
+        TabPane tabPane = (TabPane) root.getCenter();
+
+        Tab tab = tabPane.getTabs().get(0);
+        Tab tab1 = tabPane.getTabs().get(1);
+         TableView<Food> table = new TableView<>();
+         ObservableList<Food> data=null;
+        TableView<Food> table2 = new TableView<>();
+        ObservableList<Food> data2=null;
+        isitials(tab,table,data);
+        isitials1(tab1,table2,data2);
+        primaryStage.setScene(new Scene(root, 400, 140));
+        System.out.println("show");
+        primaryStage.show();
     }
 
-    public void isitials(Tab tab){
 
 
+    public void isitials1(Tab tab,TableView<Food> table,ObservableList<Food> data){
         // Foods label
         Label label = new Label("Food");
         label.setTextFill(Color.DARKBLUE);
@@ -50,12 +83,11 @@ public class MenuTable {
 
         // Table view, data, columns and properties
 
-        table = new TableView<>();
-        data = getInitialTableData();
+        data = getInitialTableData2();
         table.setItems(data);
         table.setEditable(true);
 
-        foodActions();
+        foodActions(table);
 
         table.setPrefWidth(450);
         table.setPrefHeight(300);
@@ -65,8 +97,6 @@ public class MenuTable {
                 new RowSelectChangeListener());
 
         // Add and delete buttons
-        Button addbtn = new Button("Add");
-        addbtn.setOnAction(new AddButtonListener());
         Button delbtn = new Button("Delete");
         delbtn.setOnAction(new DeleteButtonListener());
         Button refbtn = new Button("refresh");
@@ -75,7 +105,9 @@ public class MenuTable {
         save.setOnAction(new SaveButtonListener());
         HBox buttonHb = new HBox(10);
         buttonHb.setAlignment(Pos.CENTER);
-        buttonHb.getChildren().addAll(addbtn, delbtn,refbtn,save);
+        buttonHb.getChildren().addAll(delbtn,refbtn,save);
+
+
 
         // Status message text
         actionStatus = new Text();
@@ -95,11 +127,74 @@ public class MenuTable {
         table.getSelectionModel().select(0);
         Food food = table.getSelectionModel().getSelectedItem();
         //actionStatus.setText(food.toString());
-
+        this.table = table;
+        this.data = data;
     } // start()
 
 
-    private void foodActions(){
+
+
+
+
+
+
+    public void isitials(Tab tab,TableView<Food> table,ObservableList<Food> data){
+        // Foods label
+        Label label = new Label("Food");
+        label.setTextFill(Color.DARKBLUE);
+        label.setFont(Font.font("Calibri", FontWeight.BOLD, 36));
+        HBox labelHb = new HBox();
+        labelHb.setAlignment(Pos.CENTER);
+        labelHb.getChildren().add(label);
+
+        // Table view, data, columns and properties
+
+        table = new TableView<>();
+        data = getInitialTableData();
+        table.setItems(data);
+        table.setEditable(true);
+
+        foodActions(table);
+
+        table.setPrefWidth(450);
+        table.setPrefHeight(300);
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        table.getSelectionModel().selectedIndexProperty().addListener(
+                new RowSelectChangeListener());
+
+        // Add and delete buttons
+        Button addbtn = new Button("Add");
+        addbtn.setOnAction(new AddButtonListener());
+
+        HBox buttonHb = new HBox(10);
+        buttonHb.setAlignment(Pos.CENTER);
+        buttonHb.getChildren().addAll(addbtn);
+
+        // Status message text
+        actionStatus = new Text();
+        actionStatus.setFill(Color.FIREBRICK);
+
+        // Vbox
+        VBox vbox = new VBox(20);
+        vbox.setPadding(new Insets(25, 25, 25, 25));
+        vbox.getChildren().addAll(labelHb, table, buttonHb, actionStatus);
+
+
+
+        tab.setContent(vbox);
+
+
+        // Select the first row
+        table.getSelectionModel().select(0);
+        Food food = table.getSelectionModel().getSelectedItem();
+        //actionStatus.setText(food.toString());
+        this.table2 = table;
+        this.data2 = data;
+    } // start()
+
+
+    private void foodActions(TableView<Food> table){
 
 
 
@@ -151,8 +246,8 @@ public class MenuTable {
             }
 
             Food food = data.get(ix);
-              actionStatus.setText(food.toString());
-              food.update();
+         //   actionStatus.setText(food.toString());
+          //  food.update();
         }
     }
 
@@ -169,13 +264,28 @@ public class MenuTable {
         return data;
     }
 
+    private ObservableList<Food> getInitialTableData2() {
+
+        List<Food> list = new ArrayList<>();
+        factor.findFoodsOfFactor();
+        ArrayList<Food> foods = factor.getFoods();
+        for (int i=0;i<foods.size();i++){
+            list.add(foods.get(i));
+        }
+        ObservableList<Food> data = FXCollections.observableList(list);
+
+        return data;
+    }
+
     private class AddButtonListener implements EventHandler<ActionEvent> {
 
         @Override
         public void handle(ActionEvent e) {
 
-            // Create a new row after last row
-            Food food = new Food();
+            Food food = (Food) table2.getSelectionModel().getSelectedItem();
+            lastAdded.add(food);
+
+
             data.add(food);
             int row = data.size() - 1;
 
@@ -183,8 +293,6 @@ public class MenuTable {
             table.requestFocus();
             table.getSelectionModel().select(row);
             table.getFocusModel().focus(row);
-            lastAdded.add(food);
-            actionStatus.setText("New food: Enter title and author. Press <Enter>.");
         }
     }
 
@@ -194,10 +302,17 @@ public class MenuTable {
 
         @Override
         public void handle(ActionEvent e) {
+            int max = 0;
 
+            if(factor.getTotal_price() != null)
+                max = Integer.parseInt(factor.getTotal_price());
             for (int i=0;i<lastAdded.size();i++){
-                lastAdded.get(i).setnewFood();
+                max+=lastAdded.get(i).getPrice();
+                factor.addFoodToFactor(lastAdded.get(i));
             }
+            max+=max/4;
+            factor.setTotal_price(""+max);
+            factor.update();
             lastAdded = new ArrayList<Food>();
         }
     }
@@ -206,14 +321,23 @@ public class MenuTable {
     private class DeleteButtonListener implements EventHandler<ActionEvent> {
 
         @Override
-        public void handle(ActionEvent e) {
+        public void handle(ActionEvent e) {//TODO
+
 
             // Get selected row and delete
             System.out.println("here");
             int ix = table.getSelectionModel().getSelectedIndex();
             Food food = (Food) table.getSelectionModel().getSelectedItem();
-            if(food.remove())
+            if(food != null) {
+                for(int i=0;i<lastAdded.size();i++){
+                    if(lastAdded.get(i).getId() == food.getId()){
+                        lastAdded.remove(i);
+                        break;
+                    }
+                }
                 data.remove(ix);
+
+            }
             else {
                 AttentionPane.Error("some thing went wrong!");
             }
@@ -242,10 +366,7 @@ public class MenuTable {
 
         @Override
         public void handle(ActionEvent e) {
-            Food account =  table.getSelectionModel().getSelectedItem();
-            if(account!=null)
-                account.update();
-            data = getInitialTableData();
+            data = getInitialTableData2();
             table.setItems(data);
         }
     }

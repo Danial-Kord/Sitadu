@@ -48,6 +48,13 @@ public class Peyk {
         }
         return false;
     }
+
+
+    public boolean update(){
+        String values = String.format("first_name = \'%s\', last_name = \'%s\'" +
+                ",phone = \'%s\'",first_name,last_name,phone);
+        return SQLInstructions.update("peyk",values,"id = \'"+id +"\'");
+    }
     public boolean addNewPeyk(){
         if(!setNewId())
             return false;

@@ -1,6 +1,7 @@
 package GUI;
 
 import com.company.Account;
+import com.company.Factor;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -14,6 +15,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -65,8 +68,8 @@ public class AccountTable {
                 new RowSelectChangeListener());
 
         // Add and delete buttons
-        Button addbtn = new Button("Add");
-        addbtn.setOnAction(new AddButtonListener());
+        Button addbtn = new Button("addFactor");
+        addbtn.setOnAction(new addNewFactor());
         Button delbtn = new Button("Delete");
         delbtn.setOnAction(new DeleteButtonListener());
         Button refbtn = new Button("refresh");
@@ -206,6 +209,7 @@ public class AccountTable {
             }
 
             Account account = data.get(ix);
+
           //  actionStatus.setText(account.toString());
         }
     }
@@ -296,8 +300,22 @@ public class AccountTable {
 
         @Override
         public void handle(ActionEvent e) {
+            Account account = (Account) table.getSelectionModel().getSelectedItem();
+            if(account!=null)
+            account.update();
             data = getInitialTableData();
             table.setItems(data);
+        }
+    }
+
+    private class addNewFactor implements EventHandler<ActionEvent> {
+
+        @Override
+        public void handle(ActionEvent e) {
+            Account account = (Account) table.getSelectionModel().getSelectedItem();
+
+            Factor factor = GuiManager.sitadu.delivary(account);
+            new FoodAdderTable(factor);
         }
     }
 

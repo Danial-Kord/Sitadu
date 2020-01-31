@@ -163,7 +163,7 @@ public class PeykTable {
 
             Peyk peyk = data.get(ix);
               actionStatus.setText(peyk.toString());
-
+            peyk.update();
         }
     }
 
@@ -253,6 +253,9 @@ public class PeykTable {
 
         @Override
         public void handle(ActionEvent e) {
+            Peyk account =  table.getSelectionModel().getSelectedItem();
+            if(account!=null)
+                account.update();
             data = getInitialTableData();
             table.setItems(data);
         }

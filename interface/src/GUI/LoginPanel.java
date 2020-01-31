@@ -51,6 +51,11 @@ public class LoginPanel {
                 String userTest =  user.getText();
                 String passTest =  pass.getText();
                 if(GuiManager.sitadu.getAccount().logIn(admin,userTest,passTest)){
+                    if(!admin)
+                        new AccountPanel(GuiManager.sitadu.getAccount());
+                    else {
+                        new ManagementPanel();
+                    }
 
                 }
                 else {

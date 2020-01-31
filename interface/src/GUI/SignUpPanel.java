@@ -56,7 +56,7 @@ public class SignUpPanel {
                 String userTest =  user.getText();
                 String passTest =  pass.getText();
 
-                if(GuiManager.sitadu.getAccount().settingUserPass(userTest,passTest) && !passTest.endsWith("")){
+                if(GuiManager.sitadu.getAccount().settingUserPass(userTest,passTest) && !passTest.equals("")){
                     wrong_Pass.setVisible(false);
                     stage.close();
                     new Registration();
