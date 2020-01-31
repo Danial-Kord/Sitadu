@@ -121,7 +121,7 @@ public class RawMaterialTable {
         id1.setCellFactory(TextFieldTableCell.forTableColumn());
         id1.setEditable(false);
 
-        TableColumn price = new TableColumn("price1");
+        TableColumn price = new TableColumn("price");
         price.setCellValueFactory(new PropertyValueFactory<RawMaterial, String>("price1"));
         price.setCellFactory(TextFieldTableCell.forTableColumn());
         price.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<RawMaterial, String>>() {
@@ -134,8 +134,19 @@ public class RawMaterialTable {
             }
         });
 
+        TableColumn maeket_id = new TableColumn("market_id");
+        maeket_id.setCellValueFactory(new PropertyValueFactory<RawMaterial, String>("market_id"));
+        maeket_id.setCellFactory(TextFieldTableCell.forTableColumn());
+        maeket_id.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<RawMaterial, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<RawMaterial, String> t) {
 
-        table.getColumns().setAll(id1,phone,price);
+                ((RawMaterial) t.getTableView().getItems().get(
+                        t.getTablePosition().getRow())
+                ).setMarket_id(t.getNewValue());
+            }
+        });
+        table.getColumns().setAll(id1,phone,price,maeket_id);
     }
     private class RowSelectChangeListener implements ChangeListener<Number> {
 

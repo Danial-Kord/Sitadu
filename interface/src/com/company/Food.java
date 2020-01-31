@@ -6,7 +6,6 @@ public class Food extends Materials{
 
     public Food(String name, int price) {
         super(name, price);
-        setNewId("menu");
     }
     public Food() { super();}
 

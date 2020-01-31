@@ -22,8 +22,7 @@ create table customer
     primary key (user)
 );
 
-insert into customer values ("sdwdsad", "pass", "first_name", "last_name", "melfgcode", "phone", 22) ;
-select * from customer;
+
 
 
 create table address(
@@ -76,15 +75,23 @@ create table menu_factor(
 );
 
 
+create table market(
+id varchar(40) ,
+primary key (id)
 
+);
 
 create table raw_material(
 id int auto_increment,
 name    varchar(30),
 price   int,
-primary key (id)
+market_id varchar(40),
+primary key (id),
+foreign key (market_id) references market(id)
 
 );
+
+
 
 
 create table log(#TODO

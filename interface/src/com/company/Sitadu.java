@@ -209,8 +209,9 @@ public class Sitadu {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
+                String maket_id = rs.getString("market_id");
                 int price = rs.getInt("price");
-                raw_material.add(new RawMaterial(id,name,price));
+                raw_material.add(new RawMaterial(id,name,price,maket_id));
             }
             return true;
         } catch (SQLException e) {

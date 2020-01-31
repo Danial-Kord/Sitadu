@@ -23,7 +23,9 @@ public class SQLInstructions {
        return false;
     }
     public static boolean update(String table,String values,String cond){
+
         String sql = SQLStatement.update(table,values,cond);
+        System.out.println(sql);
         Statement statement = DBConnection.statement;
         try {
             statement.executeUpdate(sql);
